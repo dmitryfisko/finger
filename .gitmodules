@@ -1,0 +1,6 @@
+[submodule "submodules/tensorflow-examples"]
+	path = submodules/tensorflow-examples
+	url = https://github.com/tensorflow/examples.git
+[submodule "submodules/tensorflow-datasets"]
+	path = submodules/tensorflow-datasets
+	url = https://github.com/tensorflow/datasets.git

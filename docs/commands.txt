@@ -1,0 +1,7 @@
+conda -V
+conda info --envs
+conda create --name finger python=3.7 -y
+conda install --name finger [package]
+conda remove --name finger --all
+conda activate finger
+conda deactivate
