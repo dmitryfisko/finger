@@ -1,7 +1,19 @@
-from dataset.reader.gan_dataset import GANDatasetReader
-from dataset.heatmap_mask_generator import HeatmapMaskGenerator
 import matplotlib.pyplot as plt
 import numpy as np
+
+from dataset.gandataset.gan_dataset_reader import GANDatasetReader
+
+
+class HeatmapMaskGenerator:
+
+    @staticmethod
+    def _gaussian_k(x0, y0, sigma, width, height):
+        x = np.arange(0, width, 1, float)
+        y = np.arange(0, height, 1, float)[:, np.newaxis]
+        return np.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
+
+    def generate_heatmap(self, height, width, landmark, sigma=6):
+        return self._gaussian_k(landmark[1], landmark[0], sigma, height, width)
 
 
 def visualuze_all_hand_points(height, width, keypoints):

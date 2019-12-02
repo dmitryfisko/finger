@@ -5,3 +5,4 @@ pydot = 1.4.1
 graphviz = 0.13.2
 pandas = 0.25.3
 scikit-image = 0.16.2
+imgaug = 0.3.0
