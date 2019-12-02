@@ -3,9 +3,9 @@ import random
 import tensorflow as tf
 from tensorflow_core.python.lib.io.tf_record import TFRecordWriter, tf_record_iterator
 
-from dataset.gandataset.dataset_utils import find_all_dataset_images
-from dataset.gandataset.gan_dataset_reader import GANDatasetReader
-from dataset.heatmap_mask_generator import HeatmapMaskGenerator, plot_image_and_mask
+from src.dataset.gandataset.dataset_utils import find_all_dataset_images
+from src.dataset.gandataset.gan_dataset_reader import GANDatasetReader
+from src.dataset.heatmap_mask_generator import HeatmapMaskGenerator, plot_image_and_mask
 
 DATASET_DIRECTORY = "/Users/fisko/master/finger/data/GANeratedDatasetSelected"
 TRAIN_FILE_PATH_TFRECORDS = "/Users/fisko/master/finger/data/train.tfrecords"
@@ -69,7 +69,7 @@ def count_items_in_tfrecord(file_path_tfrecord):
     line_count = 0
     for dataset_item in tf_record_iterator(file_path_tfrecord):
         image, mask = parse_tfrecord_function(dataset_item)
-        plot_image_and_mask(image, mask)
+        # plot_image_and_mask(image, mask)
         line_count += 1
 
     return line_count

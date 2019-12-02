@@ -1,5 +1,5 @@
-from dataset.reader.gan_dataset import GANDatasetReader
-from dataset.heatmap_mask_generator import HeatmapMaskGenerator
+from src.dataset import GANDatasetReader
+from src.dataset import HeatmapMaskGenerator
 import matplotlib.pyplot as plt
 import numpy as np
 
