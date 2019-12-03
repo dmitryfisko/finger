@@ -10,7 +10,7 @@ from src.dataset.heatmap_mask_generator import HeatmapMaskGenerator, plot_image_
 DATASET_DIRECTORY = "/Users/fisko/master/finger/data/GANeratedDatasetSelected"
 TRAIN_FILE_PATH_TFRECORDS = "/Users/fisko/master/finger/data/train.tfrecords"
 TEST_FILE_PATH_TFRECORDS = "/Users/fisko/master/finger/data/test.tfrecords"
-TARGET_SIZE = 160
+TARGET_SIZE = 256
 
 
 def _bytes_feature(value):
@@ -62,14 +62,14 @@ def parse_tfrecord_function(proto):
     image = tf.io.decode_raw(parsed_features['image'], tf.uint8)
     mask = tf.io.decode_raw(parsed_features['mask'], tf.float64)
 
-    return tf.reshape(image, [TARGET_SIZE, TARGET_SIZE, 3]), tf.reshape(mask, (TARGET_SIZE, TARGET_SIZE))
+    return tf.reshape(image, (TARGET_SIZE, TARGET_SIZE, 3)), tf.reshape(mask, (TARGET_SIZE, TARGET_SIZE, 1))
 
 
 def count_items_in_tfrecord(file_path_tfrecord):
     line_count = 0
     for dataset_item in tf_record_iterator(file_path_tfrecord):
-        image, mask = parse_tfrecord_function(dataset_item)
-        # plot_image_and_mask(image, mask)
+        # image, mask = parse_tfrecord_function(dataset_item)
+        # plot_image_and_mask(image.numpy(), mask.numpy())
         line_count += 1
 
     return line_count

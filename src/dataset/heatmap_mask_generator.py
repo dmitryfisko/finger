@@ -12,7 +12,7 @@ class HeatmapMaskGenerator:
         y = np.arange(0, height, 1, float)[:, np.newaxis]
         return np.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
 
-    def generate_heatmap(self, height, width, landmark, sigma=6):
+    def generate_heatmap(self, height, width, landmark, sigma=7):
         return self._gaussian_k(landmark[1], landmark[0], sigma, height, width)
 
 
@@ -30,6 +30,8 @@ def plot_image_and_mask(image, mask):
     ax.imshow(image)
     ax.set_title("image")
     ax = fig.add_subplot(1, 2, 2)
+    mask_width, mask_height, _ = mask.shape
+    mask = mask.reshape((mask_width, mask_height))
     ax.imshow(mask, cmap="gray")
     ax.set_title("mask")
     plt.show()
@@ -43,6 +45,5 @@ if __name__ == '__main__':
         '/Users/fisko/master/finger/data/GANeratedDatasetSelected/noObject/0003_color_composed.png', 256)
 
     height, width, _ = image.shape
-    result_mask = np.zeros((height, width), dtype=np.float64)
     mask = mask_generator.generate_heatmap(height, width, keypoints[8])
     plot_image_and_mask(image, mask)

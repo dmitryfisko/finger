@@ -1,7 +1,8 @@
-from src.dataset import GANDatasetReader
-from src.dataset import HeatmapMaskGenerator
 import matplotlib.pyplot as plt
 import numpy as np
+
+from src.dataset.gandataset.gan_dataset_reader import GANDatasetReader
+from src.dataset.heatmap_mask_generator import HeatmapMaskGenerator
 
 
 def visualuze_all_hand_points(height, width, keypoints):
