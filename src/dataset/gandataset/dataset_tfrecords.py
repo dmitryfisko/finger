@@ -31,7 +31,7 @@ def create_tfrecords_dataset(
     mask_generator = HeatmapMaskGenerator()
 
     random.seed(42)
-    for dataset_image_path in dataset_image_pathes:
+    for i, dataset_image_path in enumerate(dataset_image_pathes):
         image, keypoints = reader.read_dataset_item(dataset_image_path, target_size)
         height, width, _ = image.shape
         mask = mask_generator.generate_heatmap(height, width, keypoints[8])
@@ -47,6 +47,9 @@ def create_tfrecords_dataset(
             train_writer.write(serialized_item)
         else:
             test_writer.write(serialized_item)
+
+        if i % 1000 == 0:
+            print('iteration:', i)
 
     train_writer.close()
     test_writer.close()
