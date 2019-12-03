@@ -29,7 +29,7 @@ if __name__ == '__main__':
     mask_generator = HeatmapMaskGenerator()
 
     image, keypoints = reader.read_dataset_item(
-        '/Users/fisko/master/finger/data/GANeratedDatasetSelected/noObject_0003/0004_color_composed.png', 256)
+        '/Users/fisko/master/finger/data/GANeratedDatasetSelected/noObject/0003_color_composed.png', 256)
 
     height, width, _ = image.shape
     result_mask = np.zeros((height, width), dtype=np.float64)

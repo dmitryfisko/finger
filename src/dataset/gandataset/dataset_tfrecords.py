@@ -30,6 +30,7 @@ def create_tfrecords_dataset(
     reader = GANDatasetReader()
     mask_generator = HeatmapMaskGenerator()
 
+    print('version 1')
     random.seed(42)
     for i, dataset_image_path in enumerate(dataset_image_pathes):
         image, keypoints = reader.read_dataset_item(dataset_image_path, target_size)
@@ -50,6 +51,9 @@ def create_tfrecords_dataset(
 
         if i % 1000 == 0:
             print('iteration:', i)
+
+        if (i+1) % 100000 == 0:
+            break
 
     train_writer.close()
     test_writer.close()
