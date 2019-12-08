@@ -55,7 +55,7 @@ def create_tfrecords_dataset(
     print('version 1')
     random.seed(42)
     iteration_num = 0
-    for chunk_dataset_image_pathes in split_array_by_chunks(dataset_image_pathes, 2):
+    for chunk_dataset_image_pathes in split_array_by_chunks(dataset_image_pathes, 1000):
         cpu_count = multiprocessing.cpu_count()
         chunk = list(zip_with_scalar(chunk_dataset_image_pathes, target_size))
         with multiprocessing.Pool(cpu_count) as pool:
