@@ -12,7 +12,8 @@ class HeatmapMaskGenerator:
         y = np.arange(0, height, 1, float)[:, np.newaxis]
         return np.exp(-((x - x0) ** 2 + (y - y0) ** 2) / (2 * sigma ** 2))
 
-    def generate_heatmap(self, height, width, landmark, sigma=7):
+    def generate_heatmap(self, height, width, landmark):
+        sigma = 7 / 256 * height
         return self._gaussian_k(landmark[1], landmark[0], sigma, height, width)
 
 

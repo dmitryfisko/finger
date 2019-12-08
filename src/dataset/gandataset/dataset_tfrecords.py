@@ -1,7 +1,8 @@
 import random
 
 import tensorflow as tf
-from tensorflow_core.python.lib.io.tf_record import TFRecordWriter, tf_record_iterator
+from tensorflow_core.python.lib.io.tf_record import TFRecordWriter, TFRecordOptions, TFRecordCompressionType, \
+    tf_record_iterator
 
 from src.dataset.gandataset.dataset_utils import find_all_dataset_images
 from src.dataset.gandataset.gan_dataset_reader import GANDatasetReader
@@ -10,7 +11,7 @@ from src.dataset.heatmap_mask_generator import HeatmapMaskGenerator, plot_image_
 DATASET_DIRECTORY = "/Users/fisko/master/finger/data/GANeratedDatasetSelected"
 TRAIN_FILE_PATH_TFRECORDS = "/Users/fisko/master/finger/data/train.tfrecords"
 TEST_FILE_PATH_TFRECORDS = "/Users/fisko/master/finger/data/test.tfrecords"
-TARGET_SIZE = 256
+TARGET_SIZE = 160
 
 
 def _bytes_feature(value):
@@ -24,8 +25,9 @@ def _float_feature(array):
 def create_tfrecords_dataset(
         target_size, dataset_directory, train_file_path_tfrecords, test_file_path_tfrecords, train_percent):
     dataset_image_pathes = find_all_dataset_images(dataset_directory)
-    train_writer = TFRecordWriter(train_file_path_tfrecords)
-    test_writer = TFRecordWriter(test_file_path_tfrecords)
+    options = TFRecordOptions(TFRecordCompressionType.GZIP)
+    train_writer = TFRecordWriter(train_file_path_tfrecords, options=options)
+    test_writer = TFRecordWriter(test_file_path_tfrecords, options=options)
 
     reader = GANDatasetReader()
     mask_generator = HeatmapMaskGenerator()
@@ -52,7 +54,7 @@ def create_tfrecords_dataset(
         if i % 1000 == 0:
             print('iteration:', i)
 
-        if (i+1) % 100000 == 0:
+        if (i + 1) % 100000 == 0:
             break
 
     train_writer.close()
@@ -74,7 +76,8 @@ def parse_tfrecord_function(proto):
 
 def count_items_in_tfrecord(file_path_tfrecord):
     line_count = 0
-    for dataset_item in tf_record_iterator(file_path_tfrecord):
+    options = TFRecordOptions(TFRecordCompressionType.GZIP)
+    for dataset_item in tf_record_iterator(file_path_tfrecord, options=options):
         # image, mask = parse_tfrecord_function(dataset_item)
         # plot_image_and_mask(image.numpy(), mask.numpy())
         line_count += 1
