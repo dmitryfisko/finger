@@ -50,10 +50,10 @@ def create_tfrecords_dataset(target_size, dataset_directory,
                              train_percent, use_multiprocessing=False):
     dataset_image_pathes = find_all_dataset_images(dataset_directory)
     options = TFRecordOptions(TFRecordCompressionType.GZIP)
-    train_writer = TFRecordWriter(train_file_path_tfrecords, options=options)
-    test_writer = TFRecordWriter(test_file_path_tfrecords, options=options)
+    train_writer = TFRecordWriter(train_file_path_tfrecords)
+    test_writer = TFRecordWriter(test_file_path_tfrecords)
 
-    print('version 1')
+    print('version 2')
     random.seed(42)
     iteration_num = 0
     for chunk_dataset_image_pathes in split_array_by_chunks(dataset_image_pathes, 1000):
@@ -107,7 +107,7 @@ def parse_tfrecord_function(proto):
 def count_items_in_tfrecord(file_path_tfrecord):
     line_count = 0
     options = TFRecordOptions(TFRecordCompressionType.GZIP)
-    for dataset_item in tf_record_iterator(file_path_tfrecord, options=options):
+    for dataset_item in tf_record_iterator(file_path_tfrecord):
         # image, mask = parse_tfrecord_function(dataset_item)
         # plot_image_and_mask(image.numpy(), mask.numpy())
         line_count += 1
