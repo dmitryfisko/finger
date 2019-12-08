@@ -47,11 +47,11 @@ def read_dataset_item(dataset_item):
 
 def create_tfrecords_dataset(target_size, dataset_directory,
                              train_file_path_tfrecords, test_file_path_tfrecords,
-                             train_percent, use_multiprocessing=False):
+                             train_percent, use_multiprocessing=False, use_compression=False):
     dataset_image_pathes = find_all_dataset_images(dataset_directory)
-    options = TFRecordOptions(TFRecordCompressionType.GZIP)
-    train_writer = TFRecordWriter(train_file_path_tfrecords)
-    test_writer = TFRecordWriter(test_file_path_tfrecords)
+    options = TFRecordOptions(TFRecordCompressionType.GZIP) if use_compression else None
+    train_writer = TFRecordWriter(train_file_path_tfrecords, options=options)
+    test_writer = TFRecordWriter(test_file_path_tfrecords, options=options)
 
     print('version 2')
     random.seed(42)
@@ -104,18 +104,21 @@ def parse_tfrecord_function(proto):
     return tf.reshape(image, (TARGET_SIZE, TARGET_SIZE, 3)), tf.reshape(mask, (TARGET_SIZE, TARGET_SIZE, 1))
 
 
-def count_items_in_tfrecord(file_path_tfrecord):
+def count_items_in_tfrecord(file_path_tfrecord, use_compression=False):
     line_count = 0
-    options = TFRecordOptions(TFRecordCompressionType.GZIP)
-    for dataset_item in tf_record_iterator(file_path_tfrecord):
-        # image, mask = parse_tfrecord_function(dataset_item)
-        # plot_image_and_mask(image.numpy(), mask.numpy())
+    options = TFRecordOptions(TFRecordCompressionType.GZIP) if use_compression else None
+    for dataset_item in tf_record_iterator(file_path_tfrecord, options=options):
+        image, mask = parse_tfrecord_function(dataset_item)
+        plot_image_and_mask(image.numpy(), mask.numpy())
         line_count += 1
 
     return line_count
 
 
 if __name__ == "__main__":
-    create_tfrecords_dataset(TARGET_SIZE, DATASET_DIRECTORY, TRAIN_FILE_PATH_TFRECORDS, TEST_FILE_PATH_TFRECORDS, 0.5)
-    print(count_items_in_tfrecord(TRAIN_FILE_PATH_TFRECORDS))
-    print(count_items_in_tfrecord(TEST_FILE_PATH_TFRECORDS))
+    use_multiprocessing = False
+    use_compression = False
+    create_tfrecords_dataset(TARGET_SIZE, DATASET_DIRECTORY, TRAIN_FILE_PATH_TFRECORDS, TEST_FILE_PATH_TFRECORDS, 0.5,
+                             use_compression=use_compression, use_multiprocessing=use_multiprocessing)
+    print(count_items_in_tfrecord(TRAIN_FILE_PATH_TFRECORDS, use_compression=False))
+    print(count_items_in_tfrecord(TEST_FILE_PATH_TFRECORDS, use_compression=False))
