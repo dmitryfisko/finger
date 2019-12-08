@@ -45,8 +45,9 @@ def read_dataset_item(dataset_item):
     return image, mask
 
 
-def create_tfrecords_dataset(
-        target_size, dataset_directory, train_file_path_tfrecords, test_file_path_tfrecords, train_percent):
+def create_tfrecords_dataset(target_size, dataset_directory,
+                             train_file_path_tfrecords, test_file_path_tfrecords,
+                             train_percent, use_multiprocessing=False):
     dataset_image_pathes = find_all_dataset_images(dataset_directory)
     options = TFRecordOptions(TFRecordCompressionType.GZIP)
     train_writer = TFRecordWriter(train_file_path_tfrecords, options=options)
@@ -58,8 +59,13 @@ def create_tfrecords_dataset(
     for chunk_dataset_image_pathes in split_array_by_chunks(dataset_image_pathes, 1000):
         cpu_count = multiprocessing.cpu_count()
         chunk = list(zip_with_scalar(chunk_dataset_image_pathes, target_size))
-        with multiprocessing.Pool(cpu_count) as pool:
-            dataset_items = pool.map(read_dataset_item, chunk)
+
+        if use_multiprocessing:
+            with multiprocessing.Pool(cpu_count) as pool:
+                dataset_items = pool.map(read_dataset_item, chunk)
+        else:
+            dataset_items = [read_dataset_item((dataset_image_path, target_size))
+                             for dataset_image_path in chunk_dataset_image_pathes]
 
         for dataset_item in dataset_items:
             image, mask = dataset_item
