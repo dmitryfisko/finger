@@ -1,6 +1,7 @@
 import itertools
 import multiprocessing
 import random
+import time
 
 import tensorflow as tf
 from tensorflow_core.python.lib.io.tf_record import TFRecordWriter, TFRecordOptions, TFRecordCompressionType, \
@@ -53,9 +54,10 @@ def create_tfrecords_dataset(target_size, dataset_directory,
     train_writer = TFRecordWriter(train_file_path_tfrecords, options=options)
     test_writer = TFRecordWriter(test_file_path_tfrecords, options=options)
 
-    print('version 2')
+    print('version 4')
     random.seed(42)
     iteration_num = 0
+    start_time = time.time()
     for chunk_dataset_image_pathes in split_array_by_chunks(dataset_image_pathes, 1000):
         cpu_count = multiprocessing.cpu_count()
         chunk = list(zip_with_scalar(chunk_dataset_image_pathes, target_size))
@@ -83,7 +85,9 @@ def create_tfrecords_dataset(target_size, dataset_directory,
                 test_writer.write(serialized_item)
 
             if iteration_num % 1000 == 0:
-                print('iteration:', iteration_num)
+                time_spent = int(time.time() - start_time)
+                print('iteration:', iteration_num, "time_spent", time_spent)
+                start_time = time.time()
 
             iteration_num += 1
 
@@ -108,8 +112,8 @@ def count_items_in_tfrecord(file_path_tfrecord, use_compression=False):
     line_count = 0
     options = TFRecordOptions(TFRecordCompressionType.GZIP) if use_compression else None
     for dataset_item in tf_record_iterator(file_path_tfrecord, options=options):
-        image, mask = parse_tfrecord_function(dataset_item)
-        plot_image_and_mask(image.numpy(), mask.numpy())
+        # image, mask = parse_tfrecord_function(dataset_item)
+        # plot_image_and_mask(image.numpy(), mask.numpy())
         line_count += 1
 
     return line_count
