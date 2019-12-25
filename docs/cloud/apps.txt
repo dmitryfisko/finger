@@ -22,3 +22,11 @@ sudo apt install git
 
 export AUTH="dmitryfisko:e84aa07d07d13fc0a0fe8274ccb5565a984b0ef5"
 git clone -v https://$AUTH@github.com/dmitryfisko/finger.git
+git reset --hard origin/master
+
+
+python3 -m pip install --upgrade pip
+sudo pip3 install -r requirements.txt
+
+sudo apt install screen
+screen
