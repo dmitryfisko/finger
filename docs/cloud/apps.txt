@@ -1,0 +1,20 @@
+sudo apt install python
+alias python=python3
+
+sudo apt update
+sudo apt-get install python3-pip
+
+pip3 install awscli --upgrade --user
+/home/dmitryfisko/.local/bin/aws configure
+
+
+/home/dmitryfisko/.local/bin/aws --endpoint-url=https://storage.yandexcloud.net \
+    s3 cp s3://hands/GANeratedDataset_v3.zip GANeratedDataset_v3.zip
+
+/home/dmitryfisko/.local/bin/aws --endpoint-url=https://storage.yandexcloud.net \
+    s3 cp s3://hands/RealHands.zip RealHands.zip
+
+
+sudo apt install unzip
+sudo apt install htop
+sudo apt install zip

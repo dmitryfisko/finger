@@ -1,0 +1,55 @@
+ssh -i /Users/fisko/project/crawler/cloud/azure/azure dima@13.77.79.145
+
+scp -i /Users/fisko/project/crawler/cloud/azure/azure -r /Users/fisko/project/crawler/data/apps/prev-apps.csv dima@13.77.79.145:/home/dima/crawler/data/apps/prev-apps.csv
+scp -i /Users/fisko/project/crawler/cloud/azure/azure -r dima@13.77.79.145:/datadrive/crawler/data/apps/apps-copy.csv.gz  data/apps/
+scp -i /Users/fisko/project/crawler/cloud/azure/azure -r dima@13.77.79.145:/datadrive/crawler/apk_data.zip  data/apps/
+
+df -H
+
+#https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal
+dmesg | grep SCSI
+sudo fdisk /dev/sdc #(choose right disk) `n` => `p` => several enters => `p` => `w`
+sudo mkfs -t ext4 /dev/sdc1
+sudo mkdir /datadrive
+sudo mount /dev/sdc1 /datadrive
+
+df -H
+
+sudo apt-get install -y openjdk-8-jdk-headless
+
+cd /datadrive
+sudo git clone -v https://daa8d4a7f0a3dadfe34623724fa193bc0cde1503@github.com/dmitryfisko/crawler.git
+
+sudo chown -R dima crawler/
+
+cd crawler
+mkdir -p data/apps
+mkdir -p data/apps_urls
+mkdir -p data/sitemap
+mkdir -p data/sitemap_index
+mkdir -p data/sitemap_index
+mkdir -p data/topics
+
+git pull
+
+git fetch
+git reset --hard origin/master
+
+sudo apt install screen
+screen
+screen -r
+
+./gradlew web:runExperimentCrawler -i
+./gradlew web:runBundleCrawler -i
+./gradlew web:runApkCrawler -i
+
+sudo apt install nethogs
+sudo apt install htop
+
+export ANDROID_HOME="~/Library/Android/sdk"
+export PATH="$ANDROID_HOME/tools/bin:$PATH"
+
+cd /datadrive
+wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+unzip sdk-tools-linux-4333796.zip
+ools/android update sdk --filter tools,platform-tools,build-tools-28.0.3
