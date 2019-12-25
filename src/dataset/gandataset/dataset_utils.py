@@ -13,7 +13,7 @@ def _split_array(array, percentage):
     return array[:size], array[size:]
 
 
-def find_all_dataset_images(directory, search_dirs=('noObject', )): #withObject
+def find_all_dataset_images(directory, search_dirs=('noObject', 'withObject')): #withObject
     images = list()
     for search_dir in search_dirs:
         images.extend(_find_all_folder_images(os.path.join(directory, search_dir)))
