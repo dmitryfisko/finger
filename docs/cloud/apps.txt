@@ -18,3 +18,7 @@ pip3 install awscli --upgrade --user
 sudo apt install unzip
 sudo apt install htop
 sudo apt install zip
+sudo apt install git
+
+export AUTH="dmitryfisko:e84aa07d07d13fc0a0fe8274ccb5565a984b0ef5"
+git clone -v https://$AUTH@github.com/dmitryfisko/finger.git
