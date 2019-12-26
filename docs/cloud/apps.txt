@@ -30,3 +30,10 @@ sudo pip3 install -r requirements.txt
 
 sudo apt install screen
 screen
+screen -r
+
+#increase disk size
+sudo apt -y install cloud-guest-utils
+sudo lsblk
+sudo growpart /dev/sda 1
+sudo lsblk

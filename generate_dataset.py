@@ -2,7 +2,7 @@ from src.dataset.gandataset.dataset_tfrecords import create_tfrecords_dataset, c
 
 DATASET_DIRECTORY = "/home/dmitryfisko/dataset/gan/GANeratedHands_Release/data"
 TRAIN_FILE_PATH_TFRECORDS = "ganerated_256_train.tfrecords"
-TEST_FILE_PATH_TFRECORDS = "ganerated_256_train.tfrecords"
+TEST_FILE_PATH_TFRECORDS = "ganerated_256_test.tfrecords"
 TARGET_SIZE = 256
 
 use_multiprocessing = False
