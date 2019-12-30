@@ -1,9 +1,9 @@
 from src.dataset.gandataset.dataset_tfrecords import create_tfrecords_dataset, count_items_in_tfrecord
 
 DATASET_DIRECTORY = "/home/dmitryfisko/dataset/gan/GANeratedHands_Release/data"
-TRAIN_FILE_PATH_TFRECORDS = "ganerated_160_train.tfrecords"
-TEST_FILE_PATH_TFRECORDS = "ganerated_160_test.tfrecords"
-TARGET_SIZE = 160
+TRAIN_FILE_PATH_TFRECORDS = "ganerated_128_train.tfrecords"
+TEST_FILE_PATH_TFRECORDS = "ganerated_128_test.tfrecords"
+TARGET_SIZE = 128
 
 use_multiprocessing = False
 use_compression = False
